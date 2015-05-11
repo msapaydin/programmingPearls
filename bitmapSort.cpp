@@ -11,7 +11,6 @@ const int n = 10000000;
 
 //need 10 million bits
 //each int is 4 bytes or 32 bits
-//maybe we should use unsigned int's
 unsigned int bits[n/32];
 
 //sets the bit #bit in val.
@@ -23,13 +22,6 @@ void setBit(unsigned int &val, unsigned int bit) {
 
 bool getBit(unsigned int val, int bit) {
   assert ((bit >= 0) && (bit < 32));
-  /*
-  cout << " val = " << val << " bit number = " << bit << " bit value = " <<  ((val & (1 << bit))) << endl;
-   for (int i = 0; i <= bit; i++) {
-     cout << "(1 << i ) " << (1 << i ) << " "  << "val && (1 << i) " << (val & (1 << i)) << endl;
-   }
-   cout << endl;
-  */
   bool retval = ((val & (1 << bit)) == 0)  ? false:true;
   return retval;
 }
@@ -45,11 +37,11 @@ void set (unsigned int * bits, int value)
   //the above is the entry index.
   //we should then find the bit number.
   unsigned int bitIndex = value % 32;
-  //cout << " entryIndex = " << entryIndex << " bitIndex = " << bitIndex << endl;
+
   assert (entryIndex < n);
   assert (getBit(bits[entryIndex], bitIndex) == false);
   setBit(bits[entryIndex], bitIndex);
-  //cout << bits[entryIndex] << endl;
+
 }
 
 //returns true if the bit corresponding to value is set in bits array.
@@ -66,6 +58,9 @@ int main() {
 
   
   unsigned int val = 0;
+
+  /* some test code */
+
   setBit(val, 1);
   setBit(val, 0);
   assert (val == 3);
@@ -75,9 +70,7 @@ int main() {
   assert (getBit(val,3) == false);
 
   
-
-
-
+  /* end of some test code */
 
   string line;
   ifstream myfile ("example.txt");
@@ -85,9 +78,7 @@ int main() {
     {
       while ( getline (myfile,line) )
 	{
-	  //cout << line << '\n';
 	  int value = atoi(line.c_str());
-	  //cout << " value = " << value << endl;
 	  set(bits, value);
 	}
       myfile.close();
