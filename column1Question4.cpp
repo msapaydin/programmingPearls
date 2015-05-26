@@ -5,50 +5,40 @@
 
 using namespace std;
 
-//const int n = 10000000;
-#define BITSPERWORD 32
-#define SHIFT 5
-#define MASK 0x1F
-#define N 10000000
-#define k 1000000
+
+#define N 500000
+#define k 500000
 
 
+//generate a random number between lowerbound and upperbound (inclusive).
 
+int randint (int lowerbound, int upperbound) {
+  int retval = lowerbound + rand() % (upperbound + 1 - lowerbound);
+}
 
-//need 10 million bits
-//each int is 4 bytes or 32 bits
-int a[1 + N/BITSPERWORD];
-
-void set(int i) {a[i >> SHIFT] |= (1 << (i & MASK)); }
-
-int test(int i) {return a[i >> SHIFT] & (1 << (i & MASK));};
-
-void clr (int i) {a[i >> SHIFT] &= ~(1 << (i & MASK)); }
+void swap (int x[], int i, int j) {
+  assert (i < N);
+  assert (j < N);
+  int tmp = x[i];
+  x[i] = x[j];
+  x[j] = tmp;
+}
 
 
 int main() {
 
-
-  int count = 0;
   srand(time(NULL));
-
-  while (1) {
-    int value = rand() % N;
-    if (!test(value)) {
-      set(value);
-      count++;
-      if (count >= k)
-	break;
-    }
-  }
-
-
+  int x[N];
   
-  for (unsigned int i = 0; i < N; i++) {
-    if (test(i))
-      cout << i << endl;
+  for (int i = 0; i < N; i++) {
+    x[i] = i;
   }
 
+    
+  for (int i = 0; i < k; i++) {
+    swap(x, i, randint(i, N-1));
+    cout << x[i] << endl;
+  }
   
   return 0;
 
