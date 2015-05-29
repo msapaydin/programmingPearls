@@ -14,6 +14,7 @@ using namespace std;
 
 int randint (int lowerbound, int upperbound) {
   int retval = lowerbound + rand() % (upperbound + 1 - lowerbound);
+  return retval;
 }
 
 void swap (int x[], int i, int j) {
