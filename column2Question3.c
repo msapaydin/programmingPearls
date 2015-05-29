@@ -30,16 +30,11 @@ void rotate(char* x, int n, int rotdist)
 
     for (int i = 0; i < n; i++)
     {
-
         if ((((i * rotdist) + d) % n == d) && (i > 0))
         {
-            printf("%i\n", d);
             x[n - rotdist + d] = t;
             t = x[++d];
         }
-
-        printf("%i > %i", ((i * rotdist) + d) % n, (((i + 1) * rotdist) + d) % n);
-        printf("\n");
 
         x[((i * rotdist) + d) % n] = x[(((i + 1) * rotdist) + d) % n];
     }
