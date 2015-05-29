@@ -26,31 +26,32 @@ void clr (int i) {a[i >> SHIFT] &= ~(1 << (i & MASK)); }
 
 
 int main() {
+    for (unsigned int i = 0; i < n; i++)
+        clr(i);
 
-  
-  unsigned int val = 0;
-  
-  string line;
-  ifstream myfile ("example.txt");
-  if (myfile.is_open())
+    unsigned int val = 0;
+
+    string line;
+    ifstream myfile ("example.txt");
+    if (myfile.is_open())
     {
-      while ( getline (myfile,line) )
-	{
-	  int value = atoi(line.c_str());
-	  set(value);
-	}
-      myfile.close();
+        while ( getline (myfile,line) )
+        {
+            int value = atoi(line.c_str());
+            set(value);
+        }
+        myfile.close();
     }
 
-  else cout << "Unable to open file";
+    else cout << "Unable to open file";
 
-  
-  for (unsigned int i = 0; i < n; i++) {
-    if (test(i))
-      cout << i << " ";
-  }
-  cout << endl;
-  
-  return 0;
 
-} 
+    for (unsigned int i = 0; i < n; i++) {
+        if (test(i))
+            cout << i << " ";
+    }
+    cout << endl;
+
+    return 0;
+
+}
