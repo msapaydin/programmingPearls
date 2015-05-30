@@ -5,8 +5,8 @@
 
 //#define SLIDE_JUGGLE
 //#define GCD_JUGGLE
-#define RECURSIVE
-//#define TAIL_RECURSIVE
+//#define RECURSIVE
+#define TAIL_RECURSIVE
 //#define ITERATIVE
 //#define REVERSE
 
@@ -105,18 +105,50 @@ void rotate(char *x, int n, int m)
 
     if (n - m >= m)
     {
-        rotate(x, n-m, m); // remove from end
-        swap(x, n-(m+m), n-m, m); // swap from end
+        rotate(x, n - m, m); // remove from end
+        swap(x, n - (m + m), n - m, m); // swap from end
     }
     else
     {
-        rotate(x+(n-m), n-(n-m), m-(n-m)); // remove from start
-        swap(x, 0, n-m, n-m); // swap from start
+        rotate(x + (n - m), n - (n - m), m - (n - m)); // remove from start
+        swap(x, 0, n - m, n - m); // swap from start
     }
 }
 #endif
 
 #ifdef TAIL_RECURSIVE
+void swap(char *arr, int i, int j, int m)
+{
+    char t;
+
+    while (m--)
+    {
+        t = arr[i + m];
+        arr[i + m] = arr[j + m];
+        arr[j + m] = t;
+    }
+}
+
+void rotate(char *x, int n, int m)
+{
+    if (n == m)
+        return;
+
+
+    if (n - m >= m)
+    {
+        swap(x, 0, n - m, m); // swap from start
+        rotate(x, n - m, m); // remove from end
+    }
+    else
+    {
+        swap(x, 0, m, n - m); // swap from end
+        rotate(x + (n - m), m, m - (n - m)); // remove from start
+    }
+}
+#endif
+
+#ifdef TAIL_RECURSIVE_BAK
 void swap(char *arr, int length, int start_a, int start_b)
 {
     char t;
