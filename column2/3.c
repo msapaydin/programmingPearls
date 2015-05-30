@@ -3,27 +3,31 @@
 #include <string.h>
 
 
-//#define JUGGLE_OUR_SOLUTION
-//#define JUGGLE_OUR_SOLUTION
+//#define SLIDE_JUGGLE
+//#define GCD_JUGGLE
 #define RECURSIVE
+//#define TAIL_RECURSIVE
+//#define ITERATIVE
 //#define REVERSE
 
 
-char *rotate(char*, int, int);
+void rotate(char*, int, int);
 
 
 int main(int argc, char** argv)
 {
     char arr[] = "abcdefgh";
 
-    printf("%s\n", rotate(arr, strlen(arr), atoi(argv[1])));
+    rotate(arr, strlen(arr), atoi(argv[1]));
+
+    printf("%s\n", arr);
 
     return 0;
 }
 
 
-#ifdef JUGGLE_OUR_SOLUTION
-char *rotate(char* x, int n, int rotdist)
+#ifdef SLIDE_JUGGLE
+void rotate(char* x, int n, int rotdist)
 {
     if (!rotdist)
         return;
@@ -47,7 +51,7 @@ char *rotate(char* x, int n, int rotdist)
 }
 #endif
 
-#ifdef JUGGLE_BOOK_SOLUTION
+#ifdef GCD_JUGGLE
 int gcd(int i, int j)
 {
     while (i != j)
@@ -59,7 +63,7 @@ int gcd(int i, int j)
     return i;
 }
 
-char *rotate(char* x, int n, int rotdist)
+void rotate(char* x, int n, int rotdist)
 {
     for (int i = 0; i < gcd(rotdist, n); i++)
     {
@@ -78,13 +82,42 @@ char *rotate(char* x, int n, int rotdist)
         }
         x[j] = t;
     }
-
-    return x;
 }
 #endif
 
 #ifdef RECURSIVE
-void swap(char *arr, int start_a, int start_b, int length)
+void swap(char *arr, int i, int j, int m)
+{
+    char t;
+
+    while (m--)
+    {
+        t = arr[i + m];
+        arr[i + m] = arr[j + m];
+        arr[j + m] = t;
+    }
+}
+
+void rotate(char *x, int n, int m)
+{
+    if (n == m)
+        return;
+
+    if (n - m >= m)
+    {
+        rotate(x, n-m, m); // remove from end
+        swap(x, n-(m+m), n-m, m); // swap from end
+    }
+    else
+    {
+        rotate(x+(n-m), n-(n-m), m-(n-m)); // remove from start
+        swap(x, 0, n-m, n-m); // swap from start
+    }
+}
+#endif
+
+#ifdef TAIL_RECURSIVE
+void swap(char *arr, int length, int start_a, int start_b)
 {
     char t;
 
@@ -121,23 +154,21 @@ void recursive_swap(char *arr, int n, int start, int size_a)
     }
 }
 
-char *rotate(char* x, int n, int rotdist)
+void rotate(char* x, int n, int rotdist)
 {
     if (rotdist == 0 || rotdist == n)
-        return x;
+        return;
 
     recursive_swap(x, n, 0, ((rotdist % n) + n) % n);
-
-    return x;
 }
+#endif
+
+#ifdef ITERATIVE
 #endif
 
 #ifdef REVERSE
 void swap(char *arr, int i, int j)
 {
-    if (i == j)
-        return;
-
     char t = arr[i];
     arr[i] = arr[j];
     arr[j] = t;
@@ -145,22 +176,14 @@ void swap(char *arr, int i, int j)
 
 void reverse(char *arr, int start, int end)
 {
-    int i = start;
-    int j = end;
-
-    if (start >= end)
-        return;
-
     while (i < j)
         swap(arr, i++, j--);
 }
 
-char *rotate(char* x, int n, int rotdist)
+void rotate(char* x, int n, int rotdist)
 {
     reverse(x, 0, rotdist-1);
     reverse(x, rotdist, n-1);
     reverse(x, 0, n-1);
-
-    return x;
 }
 #endif
