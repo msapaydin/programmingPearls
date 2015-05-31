@@ -6,8 +6,8 @@
 //#define SLIDE_JUGGLE
 //#define GCD_JUGGLE
 //#define RECURSIVE
-#define TAIL_RECURSIVE
-//#define ITERATIVE
+//#define TAIL_RECURSIVE
+#define ITERATIVE
 //#define REVERSE
 
 
@@ -195,6 +195,42 @@ void rotate(char* x, int n, int rotdist)
 #endif
 
 #ifdef ITERATIVE
+void swap(char *arr, int i, int j, int m)
+{
+    char t;
+
+    while (m--)
+    {
+        t = arr[i + m];
+        arr[i + m] = arr[j + m];
+        arr[j + m] = t;
+    }
+}
+
+void rotate(char *x, int n, int rotdist)
+{
+    if ((rotdist == 0) || (rotdist == n))
+        return;
+
+    int i = rotdist;
+    int p = rotdist;
+    int j = n - p;
+
+    while (i != j)
+    {
+        if (i > j)
+        {
+            swap(x, p - i, p, j);
+            i -= j;
+        }
+        else
+        {
+            swap(x, p - i, p + j - i, i);
+            j -= i;
+        }
+    }
+    swap(x, p - i, p, i);
+}
 #endif
 
 #ifdef REVERSE
