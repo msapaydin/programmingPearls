@@ -134,6 +134,37 @@ void rotate(char *x, int n, int m)
     if (n == m)
         return;
 
+    if (n - m >= m)
+    {
+        swap(x, 0, n - m, m);
+        rotate(x, n - m, m);
+    }
+    else
+    {
+        swap(x, 0, m, n - m);
+        rotate(x + (n - m), m, n - m);
+    }
+}
+#endif
+
+#ifdef TAIL_RECURSIVE_BAK
+void swap(char *arr, int i, int j, int m)
+{
+    char t;
+
+    while (m--)
+    {
+        t = arr[i + m];
+        arr[i + m] = arr[j + m];
+        arr[j + m] = t;
+    }
+}
+
+void rotate(char *x, int n, int m)
+{
+    if (n == m)
+        return;
+
 
     if (n - m >= m)
     {
