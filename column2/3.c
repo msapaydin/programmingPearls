@@ -1,13 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#include <ctime>
 
 //#define SLIDE_JUGGLE
 //#define GCD_JUGGLE
-//#define RECURSIVE
+#define RECURSIVE
 //#define TAIL_RECURSIVE
-#define ITERATIVE
+//#define ITERATIVE
 //#define REVERSE
 
 
@@ -16,11 +16,24 @@ void rotate(char*, int, int);
 
 int main(int argc, char** argv)
 {
-    char arr[] = "abcdefgh";
 
+  int n = 2000000;
+  char arr[n] ;
+  
+  for (int i = 0; i < n; i++) {
+    arr[i] = (i % 10) +'0' ;
+  }
+
+
+    const clock_t begin_time = clock();
+    
     rotate(arr, strlen(arr), atoi(argv[1]));
 
-    printf("%s\n", arr);
+
+    
+    // printf("%s\n", arr);
+
+    printf("Time elapsed: %f\n",float( clock () - begin_time ) /  CLOCKS_PER_SEC);
 
     return 0;
 }
@@ -116,7 +129,7 @@ void rotate(char *x, int n, int m)
 }
 #endif
 
-#ifdef TAIL_RECURSIVE
+#ifdef TAIL_RECURSIVE_BAK
 void swap(char *arr, int i, int j, int m)
 {
     char t;
@@ -243,8 +256,8 @@ void swap(char *arr, int i, int j)
 
 void reverse(char *arr, int start, int end)
 {
-    while (i < j)
-        swap(arr, i++, j--);
+    while (start < end)
+        swap(arr, start++, end--);
 }
 
 void rotate(char* x, int n, int rotdist)
