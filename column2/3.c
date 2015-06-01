@@ -1,14 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <ctime>
+#include <time.h>
 
 //#define SLIDE_JUGGLE
 //#define GCD_JUGGLE
-#define RECURSIVE
+//#define RECURSIVE
 //#define TAIL_RECURSIVE
 //#define ITERATIVE
-//#define REVERSE
+#define REVERSE
 
 
 void rotate(char*, int, int);
@@ -19,21 +19,18 @@ int main(int argc, char** argv)
 
   int n = 2000000;
   char arr[n] ;
-  
+
   for (int i = 0; i < n; i++) {
     arr[i] = (i % 10) +'0' ;
   }
 
-
     const clock_t begin_time = clock();
-    
+
     rotate(arr, strlen(arr), atoi(argv[1]));
 
-
-    
     // printf("%s\n", arr);
 
-    printf("Time elapsed: %f\n",float( clock () - begin_time ) /  CLOCKS_PER_SEC);
+    printf("Time elapsed: %f\n", (double)(clock () - begin_time) /  CLOCKS_PER_SEC);
 
     return 0;
 }
@@ -175,19 +172,10 @@ void swap(char *arr, int length, int start_a, int start_b)
 
 void recursive_swap(char *arr, int n, int start, int size_a)
 {
-    printf("n=%i start=%i size_a=%i\n", n, start, size_a);
-    for (int i = start; i <= start + n - 1; i++)
-        printf("%c", arr[i]);
-    printf("\n");
-
     if (size_a <= n - size_a)
         swap(arr, start, n - size_a + start, size_a);
     else
         swap(arr, start, size_a + start, n - size_a);
-
-    for (int i = start; i <= start + n - 1; i++)
-        printf("%c", arr[i]);
-    printf("\n");
 
     if (n != 2 * size_a)
     {
