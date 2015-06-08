@@ -57,16 +57,22 @@ int numberOfDaysInBetweenSameYear(Date date1, Date date2) {
   
   int numDays;
 
-  numDays = numDaysInMonths[date1.month]-date1.day + 1; //counting start day as 1.
-  if ((date1.year % 4 == 0) && (date1.month == 2))
-			     numDays++;
-  for (int month = date1.month+1; month < date2.month; month++) {
-    numDays += numDaysInMonths[month];
-    if ((date1.year % 4 == 0) && (month == 2))
-			       numDays++;
+  if (date1.month == date2.month) {
+    numDays = date2.day - date1.day;
+    assert (numDays > 0);
   }
+  else {
+    numDays = numDaysInMonths[date1.month]-date1.day + 1; //counting start day as 1.
+    if ((date1.year % 4 == 0) && (date1.month == 2))
+      numDays++;
+    for (int month = date1.month+1; month < date2.month; month++) {
+      numDays += numDaysInMonths[month];
+      if ((date1.year % 4 == 0) && (month == 2))
+	numDays++;
+    }
 
-  numDays += date2.day;
+    numDays += date2.day-1; // not including last day
+  }
   return numDays;
   
 }
@@ -103,7 +109,7 @@ Date firstDayOfYear(int year) {
 }
 
 
-int numberOfDatesBetween(Date date1, Date date2) {
+int numberOfDaysBetween(Date date1, Date date2) {
 
 
   int numDays = 0;
@@ -120,21 +126,32 @@ int numberOfDatesBetween(Date date1, Date date2) {
   }
   else {
     
-    numDays = numberOfDaysInBetweenSameYear(date1, lastDayOfYear(date1.year));
+    numDays = numberOfDaysInBetweenSameYear(date1, lastDayOfYear(date1.year)) + 1; // there is a day between the last day of date1.year and the next year's first day.
     numDays += numberOfDaysInBetweenTheYears(date1.year, date2.year);
     numDays += numberOfDaysInBetweenSameYear(firstDayOfYear(date2.year), date2);
   }
   return numDays;
 }
 
+string  dayOfTheWeek (Date date) {
+  Date today (6,8,2015);
+  
+  int numberOfDaysInBetween = numberOfDaysBetween(today, date);
+  string daysOfTheWeek[] = {"Mon","Sun","Sat","Fri","Thu","Wed","Tue"};
+  
+  return daysOfTheWeek[numberOfDaysInBetween % 7];
+}
 
 
 int main() {
   Date date1(11,28,2014), date2(6,8,2015);
-
-  cout << "num days test1 : " <<  numberOfDatesBetween( date1,  date1)  << endl;
-  cout << "num days since then: " <<  numberOfDatesBetween( date1,  date2)  << endl;
-  cout << "num days since then: " <<  numberOfDatesBetween( date2,  date1)  << endl;
-
-  
+  Date yesterday (6,7,2015);
+  Date date3(2,1,2000), date4(3,1,2000);
+  Date date5(2,1,2001);
+  cout << "num days test1 : " <<  numberOfDaysBetween( date1,  date1)  << endl;
+  cout << "num days test2 leap year (should be 29): " <<  numberOfDaysBetween( date3,  date4)  << endl;
+  cout << "num days test3 leap year (should be 366): " <<  numberOfDaysBetween( date3,  date5)  << endl;
+  cout << "num days since then: " <<  numberOfDaysBetween( date1,  date2)  << endl;
+  cout << "day of the week : " << dayOfTheWeek(date2) << endl;
+  cout << "day of the week yesterday: " << dayOfTheWeek(yesterday) << endl;
 }
