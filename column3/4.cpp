@@ -57,7 +57,10 @@ int numberOfDaysInBetweenSameYear(Date date1, Date date2) {
   
   
   assert (date1.year == date2.year);
-  assert (date1.compareTo(date2) == -1);
+  int cmp = date1.compareTo(date2);
+  
+  assert ( cmp <= 0);
+  if (cmp == 0) return 0;
   
   int numDays;
 
@@ -183,6 +186,7 @@ int main() {
   Date date3(2,1,2000), date4(3,1,2000);
   Date date5(2,1,2001);
   Date date6(7,4,2015);
+  
   cout << "num days test1 : " <<  numberOfDaysBetween( date1,  date1)  << endl;
   cout << "num days test2 leap year (should be 29): " <<  numberOfDaysBetween( date3,  date4)  << endl;
   cout << "num days test3 leap year (should be 366): " <<  numberOfDaysBetween( date3,  date5)  << endl;
@@ -192,4 +196,5 @@ int main() {
   cout << "day of the week July 4: " << dayOfTheWeek(date6) << endl;
   generateCalendar(6, 2015);
   generateCalendar(7, 2015);
+  cout << "this should be 1: " << numberOfDaysBetween(lastDayOfYear(2000), firstDayOfYear(2001)) << endl;
 }
