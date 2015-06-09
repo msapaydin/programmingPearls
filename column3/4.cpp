@@ -3,6 +3,8 @@
 
 using namespace std;
 
+
+
 class Date {
 
 public:
@@ -48,9 +50,11 @@ int Date::compareTo(Date date2) {
 }
 
 
+int numDaysInMonths[13] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+
 int numberOfDaysInBetweenSameYear(Date date1, Date date2) {
 
-  int numDaysInMonths[13] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
+  
   
   assert (date1.year == date2.year);
   assert (date1.compareTo(date2) == -1);
@@ -137,21 +141,55 @@ string  dayOfTheWeek (Date date) {
   Date today (6,8,2015);
   
   int numberOfDaysInBetween = numberOfDaysBetween(today, date);
-  string daysOfTheWeek[] = {"Mon","Sun","Sat","Fri","Thu","Wed","Tue"};
-  
-  return daysOfTheWeek[numberOfDaysInBetween % 7];
+  string daysOfTheWeekBackwards[] = {"M","N","S","F","H","W","T"};
+  string daysOfTheWeekForwards[] = {"M","T","W","R","F","S","N"};
+  if (today.compareTo(date)  >= 0)
+    return daysOfTheWeekBackwards[numberOfDaysInBetween % 7];
+  else
+    return daysOfTheWeekForwards[numberOfDaysInBetween % 7];
 }
 
+void generateCalendar (int month, int year) {
+  Date date(month, 1 , year);
+  string dayString = dayOfTheWeek (date);
+  string daysOfTheWeek[] = {"M","T","W","R","F","S","N"};
+  int i;
+  for (i = 0; i < 7; i++) {
+    if (daysOfTheWeek[i] == dayString)
+      break;
+  }
+  assert((daysOfTheWeek[i] == dayString));
+  int dayCounter = i;
+  int numDaysInWeek = 0;
+  for (i = 1; i <= numDaysInMonths  [month]; i++) {
+    numDaysInWeek++;
+    cout << i << " ";
+    if ((i % 7 == 0) || (i == numDaysInMonths[month])) {
+      cout << endl;
+      for (int j = i - numDaysInWeek; j < i; j++) {
+	cout << daysOfTheWeek[(dayCounter + j) % 7] << " ";
+	if ((j+1) /10 > 0)
+	  cout << " ";
+      }
+      numDaysInWeek = 0;
+      cout << endl;
+    }
+  }
+}
 
 int main() {
   Date date1(11,28,2014), date2(6,8,2015);
   Date yesterday (6,7,2015);
   Date date3(2,1,2000), date4(3,1,2000);
   Date date5(2,1,2001);
+  Date date6(7,4,2015);
   cout << "num days test1 : " <<  numberOfDaysBetween( date1,  date1)  << endl;
   cout << "num days test2 leap year (should be 29): " <<  numberOfDaysBetween( date3,  date4)  << endl;
   cout << "num days test3 leap year (should be 366): " <<  numberOfDaysBetween( date3,  date5)  << endl;
   cout << "num days since then: " <<  numberOfDaysBetween( date1,  date2)  << endl;
   cout << "day of the week : " << dayOfTheWeek(date2) << endl;
   cout << "day of the week yesterday: " << dayOfTheWeek(yesterday) << endl;
+  cout << "day of the week July 4: " << dayOfTheWeek(date6) << endl;
+  generateCalendar(6, 2015);
+  generateCalendar(7, 2015);
 }
